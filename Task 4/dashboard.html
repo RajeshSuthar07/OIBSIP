@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="grid items-center justify-center text-center my-50 bg-black text-white p-6">
+
+  <h1 class="text-2xl text-green-400 font-bold">Welcome to Secure Page</h1>
+
+  <p class="mt-2">You are logged in successfully.</p>
+
+  <button onclick="logout()" class="mt-4 bg-red-500 px-4 py-2 rounded">
+    Logout
+  </button>
+
+  <script src="auth.js"></script>
+  <script>
+    if (!localStorage.getItem("loggedIn")) {
+      window.location.href = "login.html";
+    }
+  </script>
+  <script src="auth.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-600 flex items-center justify-center min-h-screen">
+
+    <div class="bg-gray-800 p-6 rounded-2xl shadow-xl w-72">
+
+        <!-- Display -->
+        <div class="bg-black text-white text-right text-3xl p-4 rounded-lg mb-4">
+            0
+        </div>
+
+        <!-- Buttons -->
+        <div class="grid grid-cols-4 gap-3">
+
+            <!-- Row 1 -->
+            <button class="bg-red-400 text-white p-3 rounded-lg">C</button>
+            <button class="bg-red-400 text-white p-3 rounded-lg"><-</button>
+                    <button class="bg-black text-white p-3 rounded-lg">%</button>
+                    <button class="bg-black text-white p-3 rounded-lg">÷</button>
+
+                    <!-- Row 2 -->
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">7</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">8</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">9</button>
+                    <button class="bg-black text-white p-3 rounded-lg">×</button>
+
+                    <!-- Row 3 -->
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">4</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">5</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">6</button>
+                    <button class="bg-black text-white p-3 rounded-lg">−</button>
+
+                    <!-- Row 4 -->
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">1</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">2</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">3</button>
+                    <button class="bg-black text-white p-3 rounded-lg">+</button>
+
+                    <!-- Row 5 -->
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">0</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">00</button>
+                    <button class="bg-gray-700 text-white p-3 rounded-lg">.</button>
+                    <button class="bg-green-400 text-white p-3 rounded-lg">=</button>
+
+        </div>
+    </div>
+
+    <script>
+        const display = document.querySelector(".bg-black.text-white");
+        const buttons = document.querySelectorAll("button");
+
+        let expression = "";
+
+        function handleInput(value) {
+
+            if (value === "C") {
+                expression = "";
+                display.innerText = "0";
+                return;
+            }
+
+            if (value === "<-" || value === "Backspace") {
+                expression = expression.slice(0, -1);
+                display.innerText = expression || "0";
+                return;
+            }
+
+            if (value === "=" || value === "Enter") {
+                if (expression.trim() === "") return;
+
+                try {
+                    let exp = expression
+                        .replace(/×/g, "*")
+                        .replace(/÷/g, "/")
+                        .replace(/−/g, "-")
+                        .replace(/%/g, "/100");
+
+                    let result = eval(exp);
+                    display.innerText = result;
+                    expression = result.toString();
+                } catch {
+                    display.innerText = "Error";
+                    expression = "";
+                }
+                return;
+            }
+
+            if (["+", "−", "×", "÷"].includes(value) && expression === "") {
+                return;
+            }
+
+            expression += value;
+            display.innerText = expression;
+        }
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                handleInput(btn.innerText);
+            });
+        });
+
+        document.addEventListener("keydown", (e) => {
+            const map = {
+                "*": "×",
+                "/": "÷",
+                "-": "−",
+                "+": "+",
+                "%": "%",
+                ".": "."
+            };
+
+            if (!isNaN(e.key)) handleInput(e.key);
+            else if (map[e.key]) handleInput(map[e.key]);
+            else if (e.key === "Enter") handleInput("Enter");
+            else if (e.key === "Backspace") handleInput("Backspace");
+            else if (e.key === "Escape") {
+                expression = "";
+                display.innerText = "0";
+            }
+        });
+
+    </script>
+</body>
+
+</html>
